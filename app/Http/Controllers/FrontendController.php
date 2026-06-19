@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
@@ -28,15 +29,20 @@ class FrontendController extends Controller
     public function store(Request $request)
     {
         //
+    } 
+     public function show($id)
+    {
+        $categories = Category::all();
+        return view('frontend.show')->with('product', Product::find($id))->with('categories',$categories);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    // public function show(string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -61,4 +67,12 @@ class FrontendController extends Controller
     {
         //
     }
+
+    public function list()
+    {
+        $categories = Category::all();
+        $products = Product::orderBy('created_at','DESC')->paginate(3);
+      return view('frontend.list')->with('products',$products)->with('categories', $categories);
+    }
+  
 }

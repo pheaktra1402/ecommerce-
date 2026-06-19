@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
+ use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -95,4 +96,6 @@ class CategoryController extends Controller
         Session::flash('category_delete','Category is deleted.');
         return redirect('category');
     }
+   
+  
 }

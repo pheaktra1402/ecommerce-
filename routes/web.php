@@ -86,3 +86,5 @@ Route::put('/product/{product}', [ProductController::class, 'update'])->name('pr
 Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
 
 Route::get('/',[FrontendController::class,'index']);
+Route::get('/list',[FrontendController::class,'list']);
+Route::get('/show/{id}',[FrontendController::class,'show']);
