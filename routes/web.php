@@ -4,6 +4,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\UpdateProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,10 +23,6 @@ Route::get('/user/{id}', function ($id) {
 Route::get('/post/{slug?}', function ($slug = 'default-post') {
     return "Post slug: $slug";
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
 
 Route::get('/test', function () {
     $url = route('dashboard');
@@ -47,13 +46,12 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('/login', function () {
-    return 'login page';
-})->name('login');
-
-Route::get('/dashboard', function () {
-return view('dashboard');
-})->middleware('auth');
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/post-login', [AuthController::class, 'postLogin'])->name('login.post');
+Route::get('/registration', [AuthController::class, 'registration'])->name('register');
+Route::post('/post-registration', [AuthController::class, 'postRegistration'])->name('register.post');
+Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 
@@ -88,3 +86,12 @@ Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name
 Route::get('/',[FrontendController::class,'index']);
 Route::get('/list',[FrontendController::class,'list']);
 Route::get('/show/{id}',[FrontendController::class,'show']);
+Route::get('/search', [FrontendController::class,'getBySearch']);
+Route::get('/frontend/{category?}', [FrontendController::class,'getByCategory']);
+// change password
+Route::get('/change-password', [ChangePasswordController::class, 'index'])->name('form.password');
+Route::post('/change-password', [ChangePasswordController::class, 'store'])->name('change.password');
+
+// update profile
+Route::get('/update-profile/{user}',  [UpdateProfileController::class, 'editProfile'])->name('profile.edit');
+Route::patch('/update-profile/{user}',  [UpdateProfileController::class, 'updateProfile'])->name('profile.update');
