@@ -15,7 +15,7 @@ class ChangePasswordController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('auth'),
-        ];
+        ];//protect controler for access but didn't logined
     }
     public function __construct()
     {

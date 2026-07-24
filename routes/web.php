@@ -7,18 +7,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\UpdateProfileController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\ContactUsFormController;
+use App\Http\Controllers\StoreController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/user/{id}', function ($id) {
-    return "User ID is $id";
-});
+
 
 Route::get('/post/{slug?}', function ($slug = 'default-post') {
     return "Post slug: $slug";
@@ -95,3 +93,18 @@ Route::post('/change-password', [ChangePasswordController::class, 'store'])->nam
 // update profile
 Route::get('/update-profile/{user}',  [UpdateProfileController::class, 'editProfile'])->name('profile.edit');
 Route::patch('/update-profile/{user}',  [UpdateProfileController::class, 'updateProfile'])->name('profile.update');
+Route::get('/forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('/forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('/reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+Route::get('/contact', [ContactUsFormController::class, 'createForm']);
+Route::post('/contact', [ContactUsFormController::class, 'ContactUsForm'])->name('contact.store');
+
+
+
+Route::get('/cart', [StoreController::class, 'cart'])->name('cart');
+Route::get('/add-to-cart/{id}', [StoreController::class, 'addToCart'])->name('add.to.cart');
+Route::patch('/update-cart', [StoreController::class, 'update'])->name('update.cart');
+Route::delete('/remove-from-cart', [StoreController::class, 'remove'])->name('remove.from.cart');
+
+Route::get('/checkout', [StoreController::class, 'checkout'])->name('cart.checkout');
